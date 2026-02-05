@@ -1,197 +1,170 @@
-# CLAUDE.md - AI Assistant Guide for node_js_home
+# CLAUDE.md - AI Assistant Guide for Investing.com Clone
 
 ## Project Overview
 
-**Project Name**: node_js_home (Deeplink / 딮링크)
-**Description**: A Discord Music/Media Bot with Web Interface - designed to integrate with Discord for music/media functionality via YouTube
-**Stage**: Early development (prototype)
-**Primary Language**: JavaScript (Node.js)
-**UI Language**: Korean (한국어)
+**Project Name**: investing-clone
+**Description**: A Next.js-based clone of the Investing.com main page, featuring market data, financial news, and economic calendar
+**Stage**: Active development
+**Stack**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
 
 ## Repository Structure
 
 ```
 node_js_home/
-├── backend/                    # Node.js Express server
-│   ├── index.js               # Server entry point (Express app)
-│   ├── package.json           # Backend dependencies
-│   └── package-lock.json      # Locked dependency versions
-├── frontend/                   # Web UI (login interface)
-│   ├── index.html             # Login form page
-│   ├── script.js              # Client-side JavaScript
-│   ├── style.css              # CSS styling
-│   └── bgLogin.jpg            # Background image
-├── .gitignore                  # Node.js standard gitignore
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx          # Root layout with metadata
+│   │   ├── page.tsx            # Main homepage (assembles all sections)
+│   │   └── globals.css         # Global styles + Tailwind directives + animations
+│   ├── components/
+│   │   ├── Header.tsx          # Top bar + navigation + search + auth buttons
+│   │   ├── MarketTicker.tsx    # Scrolling price ticker bar
+│   │   ├── MarketOverview.tsx  # Tabbed market data table (indices/commodities/currencies/crypto)
+│   │   ├── LatestNews.tsx      # Featured article + news list
+│   │   ├── MarketMovers.tsx    # Top gainers/losers tables
+│   │   ├── Sidebar.tsx         # InvestingPro CTA + most popular + economic calendar
+│   │   └── Footer.tsx          # Footer links + social + app store badges
+│   ├── data/
+│   │   └── mockData.ts         # All mock market data, news, and calendar events
+│   └── types/
+│       └── market.ts           # TypeScript interfaces (MarketItem, NewsItem, EconomicEvent)
+├── public/                     # Static assets
+├── package.json                # Dependencies and scripts
+├── tsconfig.json               # TypeScript configuration
+├── tailwind.config.ts          # Tailwind theme (custom colors, fonts)
+├── postcss.config.js           # PostCSS plugins
+├── next.config.js              # Next.js configuration
+├── next-env.d.ts               # Next.js TypeScript declarations
+├── .gitignore                  # Git ignored files
 └── CLAUDE.md                   # This file
 ```
 
-## Technology Stack
-
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js v4.18.2
-- **Discord Integration**: Discord.js v14.15.2, @discordjs/voice v0.17.0 (installed but not yet implemented)
-- **Media**: ytdl-core v4.11.5 for YouTube downloads (installed but not yet implemented)
-- **Middleware**: CORS v2.8.5
-- **Dev Tools**: Nodemon v3.1.0
-
-### Frontend
-- **Markup**: Vanilla HTML5
-- **Styling**: CSS3 (flexbox, modern features)
-- **JavaScript**: Vanilla JS with Fetch API
-- **Libraries**: jQuery v3.5.1, Font Awesome v6.4.0 (CDN)
-
 ## Quick Start
 
-### Install Dependencies
 ```bash
-cd backend
-npm install
-```
-
-### Run Development Server
-```bash
-# From backend directory
-npx nodemon index.js
-# OR
-node index.js
-```
-
-### Server Port
-The server runs on **port 3000** by default.
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/` | Serves frontend index.html |
-| `GET` | `/test` | Returns test string |
-| `POST` | `/textUrl` | Accepts JSON with `name` and `name2` fields |
-
-### POST /textUrl Example
-```javascript
-// Request
-fetch('http://localhost:3000/textUrl', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ name: 'value1', name2: 'value2' })
-});
-
-// Response
-{ "message": "OK", "data": { "name": "...", "name2": "..." } }
-```
-
-## Code Conventions
-
-### Backend (Node.js)
-- Comments may be in Korean
-- Uses CommonJS module system (`require`)
-- Express app pattern with middleware chain
-- Console.log for debugging output
-
-### Frontend (JavaScript)
-- Async/await with try/catch for API calls
-- Arrow functions preferred
-- CamelCase function naming (e.g., `getData`, `getForm`, `getSpinner`)
-- Fetch API for HTTP requests (not jQuery.ajax)
-
-### CSS
-- Flexbox for layouts
-- Viewport-relative units where appropriate
-- Modern features (backdrop-filter, rgba)
-
-## Key Files Reference
-
-### backend/index.js
-Main Express server setup:
-- Lines 1-5: Dependencies and app initialization
-- Lines 6-8: Middleware (CORS, JSON parser, URL-encoded parser)
-- Lines 10-20: POST /textUrl route
-- Lines 22-26: GET / route (serves frontend)
-- Lines 28-30: GET /test route
-- Lines 32-34: Server listener on port 3000
-
-### frontend/script.js
-Client-side logic:
-- `getData()`: Sends form data to backend via POST
-- `getForm()`: Reads and parses URL parameters into form
-- `getSpinner()`: Toggles loading spinner visibility
-- URL parameter handling for state persistence
-
-### frontend/index.html
-Login form UI with:
-- Username/password inputs
-- Three action buttons (Login, Login2, Login3)
-- Loading spinner component
-
-## Development Notes
-
-### Known Issues & Technical Debt
-1. **Unused Dependencies**: Discord.js, @discordjs/voice, and ytdl-core are installed but not implemented
-2. **Hardcoded Paths**: Backend expects frontend at `/webService/frontend/` path
-3. **No Error Handling**: Express routes lack try/catch and error middleware
-4. **No Input Validation**: Request body is used directly without validation
-5. **No Environment Configuration**: No .env file setup for secrets/config
-6. **No Tests**: No testing framework or test files present
-
-### Deployment Considerations
-- Frontend references `http://localhost:3000` - needs environment-based configuration for production
-- CSS paths reference `/webService/frontend/` structure
-- No build process configured
-
-## Git Workflow
-
-### Branch Naming
-Development branches should follow the pattern: `claude/claude-md-*`
-
-### Commit Messages
-The project uses Korean commit messages:
-- "node js 딮링크 백앤드 폴더" (backend folder setup)
-- "딮링크 node js 세팅 프론트" (frontend setup)
-
-## Future Implementation Areas
-
-Based on installed but unused dependencies, planned features include:
-1. **Discord Bot**: Using Discord.js for bot functionality
-2. **Voice Integration**: Using @discordjs/voice for voice channel features
-3. **YouTube Playback**: Using ytdl-core for streaming YouTube audio
-
-## Security Considerations
-
-When implementing features, be aware of:
-- No input validation currently exists
-- CORS is open to all origins (`*`)
-- No authentication/authorization implemented
-- Sensitive data (Discord tokens, etc.) should use environment variables
-
-## Testing
-
-Currently no testing infrastructure. When adding tests:
-- Consider Jest or Mocha for backend testing
-- Add npm scripts for test execution
-- Implement integration tests for API endpoints
-
-## Commands Reference
-
-```bash
-# Navigate to backend
-cd backend
-
 # Install dependencies
 npm install
 
-# Start server (production)
-node index.js
+# Start development server
+npm run dev
 
-# Start server (development with auto-reload)
-npx nodemon index.js
+# Build for production
+npm run build
 
-# Check for outdated packages
-npm outdated
+# Start production server
+npm start
 
-# Update packages
-npm update
+# Run linter
+npm run lint
 ```
+
+The dev server runs on **http://localhost:3000** by default.
+
+## Technology Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS 3.4 with custom theme
+- **React**: 18.3 (Server and Client Components)
+
+## Architecture Decisions
+
+### App Router
+Uses Next.js App Router (`src/app/`). The `layout.tsx` provides the HTML shell and metadata. The `page.tsx` is the homepage entry point.
+
+### Client vs Server Components
+- **Server Components** (default): `LatestNews`, `Sidebar`, `Footer` - no interactivity needed
+- **Client Components** (`"use client"`): `Header`, `MarketTicker`, `MarketOverview`, `MarketMovers` - require `useState` for tabs, dropdowns, search
+
+### Mock Data Pattern
+All data lives in `src/data/mockData.ts` with typed exports. When connecting to real APIs, replace these imports with fetch calls or server actions. Types are defined in `src/types/market.ts`.
+
+## Custom Design Tokens
+
+Defined in `tailwind.config.ts`:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `inv-green` | `#059669` | Positive price changes |
+| `inv-red` | `#dc2626` | Negative price changes |
+| `inv-dark` | `#1b2028` | Top bar, footer backgrounds |
+| `inv-nav` | `#253040` | Main navigation background |
+| `inv-blue` | `#2962ff` | Links, active tabs, CTAs |
+| `inv-light` | `#f8f9fa` | Alternating table rows |
+| `inv-border` | `#e0e3eb` | Card/table borders |
+| `inv-text` | `#333333` | Primary text |
+| `inv-text-light` | `#6a6d78` | Secondary/muted text |
+
+## Component Guide
+
+### Header (`src/components/Header.tsx`)
+- Sticky positioned, z-50
+- Two-level: dark top bar (edition/language) + nav bar (logo, menus, search, auth)
+- Dropdown menus on hover (desktop), hamburger menu (mobile)
+
+### MarketTicker (`src/components/MarketTicker.tsx`)
+- CSS animation (`animate-ticker`) for infinite horizontal scrolling
+- Pauses on hover
+- Items duplicated for seamless loop effect
+
+### MarketOverview (`src/components/MarketOverview.tsx`)
+- 4 tabs: Major Indices, Commodities, Currencies, Crypto
+- Data table with Name, Last, High, Low, Change, Change %
+- Color-coded change values (green/red)
+
+### LatestNews (`src/components/LatestNews.tsx`)
+- Featured article with gradient image placeholder at top
+- List of articles below with category badges, timestamps, source
+- Thumbnail placeholders on right side
+
+### MarketMovers (`src/components/MarketMovers.tsx`)
+- 2 tabs: Top Gainers / Top Losers
+- Compact table with Name, Last, Chg, Chg %
+
+### Sidebar (`src/components/Sidebar.tsx`)
+- InvestingPro promotional card (gradient background)
+- Most Popular articles (numbered 1-5)
+- Economic Calendar with impact indicators and flag emojis
+
+### Footer (`src/components/Footer.tsx`)
+- 4-column link grid (About, Products, Markets, More)
+- Social media links + App Store / Google Play badges
+- Risk disclaimer + copyright
+
+## Code Conventions
+
+- **TypeScript**: Strict mode enabled, all props and data typed
+- **Components**: One component per file, PascalCase naming
+- **Styling**: Tailwind utility classes exclusively (no CSS modules)
+- **Imports**: Use `@/*` path alias for `src/` directory
+- **Data**: Mock data separated from components in `src/data/`
+- **Types**: Shared interfaces in `src/types/`
+- **Formatting**: Double quotes for JSX attributes, semicolons
+
+## Page Layout (top to bottom)
+
+1. **Header** (sticky) - Navigation with dropdowns
+2. **MarketTicker** - Scrolling horizontal price bar
+3. **MarketOverview** - Full-width tabbed data table
+4. **Two-column grid** (lg breakpoint):
+   - Left (2/3): LatestNews + MarketMovers
+   - Right (1/3): Sidebar
+5. **Footer** - Links, social, legal
+
+## Responsive Breakpoints
+
+- **Mobile** (<640px): Single column, hamburger menu, stacked layout
+- **Tablet** (640px-1024px): Partial grid, some elements hidden
+- **Desktop** (1024px+): Full 3-column grid, dropdown nav, max-width 1260px
+
+## Future Development
+
+When extending this project:
+1. **Real API integration**: Replace `mockData.ts` imports with API calls using `fetch` in Server Components or SWR/React Query in Client Components
+2. **Additional pages**: Add routes under `src/app/` (e.g., `src/app/markets/page.tsx`)
+3. **Charts**: Integrate a charting library (e.g., lightweight-charts, recharts)
+4. **Authentication**: Add NextAuth.js for sign in/sign up functionality
+5. **i18n**: Add internationalization for Korean and other languages
 
 ---
 
