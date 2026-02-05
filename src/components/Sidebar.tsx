@@ -1,4 +1,5 @@
 import { mostPopular, economicEvents } from "@/data/mockData";
+import VixGauge from "@/components/VixGauge";
 
 function ImpactDot({ impact }: { impact: "high" | "medium" | "low" }) {
   const colors = {
@@ -13,19 +14,22 @@ function ImpactDot({ impact }: { impact: "high" | "medium" | "low" }) {
 
 function FlagEmoji({ code }: { code: string }) {
   const flags: Record<string, string> = {
-    US: "🇺🇸",
-    EU: "🇪🇺",
-    GB: "🇬🇧",
-    JP: "🇯🇵",
-    CN: "🇨🇳",
-    KR: "🇰🇷",
+    US: "\u{1F1FA}\u{1F1F8}",
+    EU: "\u{1F1EA}\u{1F1FA}",
+    GB: "\u{1F1EC}\u{1F1E7}",
+    JP: "\u{1F1EF}\u{1F1F5}",
+    CN: "\u{1F1E8}\u{1F1F3}",
+    KR: "\u{1F1F0}\u{1F1F7}",
   };
-  return <span className="text-sm">{flags[code] || "🏳️"}</span>;
+  return <span className="text-sm">{flags[code] || "\u{1F3F3}\u{FE0F}"}</span>;
 }
 
 export default function Sidebar() {
   return (
     <aside className="space-y-5">
+      {/* VIX Fear & Greed 실시간 위젯 */}
+      <VixGauge />
+
       {/* InvestingPro CTA */}
       <div className="bg-gradient-to-br from-inv-nav to-inv-dark rounded-lg p-5 text-white">
         <div className="text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
@@ -59,7 +63,7 @@ export default function Sidebar() {
                 </h4>
                 <div className="flex items-center gap-2 mt-1 text-xs text-inv-text-light">
                   <span>{article.category}</span>
-                  <span>·</span>
+                  <span>&middot;</span>
                   <span>{article.time}</span>
                 </div>
               </div>
@@ -73,7 +77,7 @@ export default function Sidebar() {
         <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border">
           <h3 className="text-base font-bold text-inv-text">Economic Calendar</h3>
           <a href="#" className="text-inv-blue text-xs font-medium hover:underline">
-            Full Calendar →
+            Full Calendar &rarr;
           </a>
         </div>
         <div className="divide-y divide-inv-border">
@@ -101,7 +105,7 @@ export default function Sidebar() {
         </div>
         <div className="px-4 py-3 border-t border-inv-border">
           <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
-            View All Events →
+            View All Events &rarr;
           </a>
         </div>
       </div>
