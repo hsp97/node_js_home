@@ -12,6 +12,32 @@ async function fetchApi<T>(path: string): Promise<T> {
   return json.data;
 }
 
+// ── Auth ──
+
+export interface LoginResponse {
+  chatId: string;
+}
+
+export interface LoginResult {
+  success: boolean;
+  data?: LoginResponse;
+  message?: string;
+}
+
+/** 텔레그램 Chat ID로 로그인 */
+export async function login(chatId: string): Promise<LoginResult> {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chatId }),
+  });
+
+  const json = await res.json();
+  return json;
+}
+
+// ── Market Data ──
+
 /** 주요 지수 (나스닥, 다우, S&P500, 러셀2000) */
 export async function getMarketIndices(): Promise<MarketIndex[]> {
   return fetchApi<MarketIndex[]>("/market/indices");
