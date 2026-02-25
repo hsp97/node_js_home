@@ -3,7 +3,7 @@ import MarketTicker from "@/components/MarketTicker";
 import MarketOverview from "@/components/MarketOverview";
 import LatestNews from "@/components/LatestNews";
 import Sidebar from "@/components/Sidebar";
-import MarketMovers from "@/components/MarketMovers";
+import Watchlist from "@/components/Watchlist";
 import Footer from "@/components/Footer";
 
 export default function DashboardPage() {
@@ -12,19 +12,26 @@ export default function DashboardPage() {
       <Header />
       <MarketTicker />
 
-      <main className="flex-1 max-w-[1260px] mx-auto w-full px-4 py-6">
-        {/* Market Overview */}
+      <main className="flex-1 max-w-[1400px] mx-auto w-full px-4 py-6">
+        {/* Market Overview - Full width */}
         <div className="mb-6">
           <MarketOverview />
         </div>
 
-        {/* Two column layout: News + Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-2 space-y-6">
-            <LatestNews />
-            <MarketMovers />
+        {/* 3 column layout: Watchlist | News | Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left - Watchlist */}
+          <div className="lg:col-span-3">
+            <Watchlist />
           </div>
-          <div className="lg:col-span-1">
+
+          {/* Center - News */}
+          <div className="lg:col-span-5">
+            <LatestNews />
+          </div>
+
+          {/* Right - Sidebar */}
+          <div className="lg:col-span-4">
             <Sidebar />
           </div>
         </div>
