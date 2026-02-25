@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { login } from "@/lib/api";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [chatId, setChatId] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
@@ -20,8 +24,23 @@ export default function LoginPage() {
       return;
     }
 
-    // TODO: 인증 로직 연결
-    console.log("login with chat_id:", trimmed);
+    setLoading(true);
+
+    try {
+      const result = await login(trimmed);
+
+      if (result.success) {
+        // 로그인 성공 → 대시보드로 이동
+        router.push("/dashboard");
+      } else {
+        // 서버에서 반환한 실패 메시지 표시
+        setError(result.message || "로그인에 실패했습니다.");
+      }
+    } catch (err) {
+      setError("서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -99,8 +118,10 @@ export default function LoginPage() {
                   setChatId(e.target.value);
                   setError("");
                 }}
+                disabled={loading}
                 className={`w-full px-4 py-3 border rounded-xl text-inv-text placeholder-gray-300 text-sm
                   focus:outline-none focus:ring-2 focus:ring-inv-blue focus:border-transparent transition-all
+                  disabled:bg-gray-100 disabled:cursor-not-allowed
                   ${error ? "border-inv-red bg-red-50" : "border-inv-border bg-white"}`}
               />
               {error && (
@@ -119,10 +140,23 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-inv-blue hover:bg-blue-700 text-white font-bold py-3 rounded-xl
-                transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-inv-blue"
+              disabled={loading}
+              className="w-full bg-inv-blue hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed
+                text-white font-bold py-3 rounded-xl transition-colors
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-inv-blue
+                flex items-center justify-center gap-2"
             >
-              로그인
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  로그인 중...
+                </>
+              ) : (
+                "로그인"
+              )}
             </button>
           </form>
         </div>
