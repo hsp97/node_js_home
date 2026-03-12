@@ -6,11 +6,11 @@ import { getVixData } from "@/lib/api";
 import type { VixLevel } from "@/types/market";
 
 const LEVEL_CONFIG: Record<VixLevel, { label: string; color: string; bg: string; emoji: string }> = {
-  extreme_greed: { label: "Extreme Greed", color: "text-inv-green", bg: "bg-inv-green", emoji: "🟢" },
-  greed:         { label: "Greed",         color: "text-emerald-500", bg: "bg-emerald-500", emoji: "🟡" },
-  normal:        { label: "Normal",        color: "text-yellow-500", bg: "bg-yellow-500", emoji: "🟡" },
-  fear:          { label: "Fear",          color: "text-orange-500", bg: "bg-orange-500", emoji: "🟠" },
-  extreme_fear:  { label: "Extreme Fear",  color: "text-inv-red", bg: "bg-inv-red", emoji: "🔴" },
+  extreme_greed: { label: "극단적 탐욕", color: "text-inv-green", bg: "bg-inv-green", emoji: "🟢" },
+  greed:         { label: "탐욕",       color: "text-emerald-500", bg: "bg-emerald-500", emoji: "🟡" },
+  normal:        { label: "중립",       color: "text-yellow-500", bg: "bg-yellow-500", emoji: "🟡" },
+  fear:          { label: "공포",       color: "text-orange-500", bg: "bg-orange-500", emoji: "🟠" },
+  extreme_fear:  { label: "극단적 공포", color: "text-inv-red", bg: "bg-inv-red", emoji: "🔴" },
 };
 
 /** VIX 값에 따른 게이지 바 위치 (0~100) */
@@ -40,8 +40,8 @@ export default function VixGauge() {
   if (error || !vix) {
     return (
       <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
-        <h3 className="text-base font-bold text-inv-text mb-2">Fear & Greed Index</h3>
-        <p className="text-sm text-inv-text-light">Unable to load VIX data</p>
+        <h3 className="text-base font-bold text-inv-text mb-2">공포 & 탐욕 지수</h3>
+        <p className="text-sm text-inv-text-light">VIX 데이터를 불러올 수 없습니다</p>
       </div>
     );
   }
@@ -52,7 +52,7 @@ export default function VixGauge() {
   return (
     <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-bold text-inv-text">Fear & Greed Index</h3>
+        <h3 className="text-base font-bold text-inv-text">공포 & 탐욕 지수</h3>
         <span className="text-xs text-inv-text-light">VIX</span>
       </div>
 
@@ -82,8 +82,8 @@ export default function VixGauge() {
         />
       </div>
       <div className="flex justify-between mt-1 text-[10px] text-inv-text-light">
-        <span>Extreme Greed</span>
-        <span>Extreme Fear</span>
+        <span>극단적 탐욕</span>
+        <span>극단적 공포</span>
       </div>
     </div>
   );

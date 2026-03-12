@@ -4,24 +4,24 @@ import { useState } from "react";
 
 const navItems = [
   {
-    label: "Markets",
-    submenu: ["Stocks", "Indices", "Commodities", "Currencies", "Crypto", "Bonds", "ETFs", "Funds"],
+    label: "시장",
+    submenu: ["주식", "지수", "원자재", "통화", "암호화폐", "채권", "ETF", "펀드"],
   },
   {
-    label: "News",
-    submenu: ["Latest News", "Stock Markets", "Economy", "Commodities", "Forex", "Crypto", "Politics"],
+    label: "뉴스",
+    submenu: ["최신 뉴스", "주식 시장", "경제", "원자재", "외환", "암호화폐", "정치"],
   },
   {
-    label: "Analysis",
-    submenu: ["Technical Analysis", "Fundamental Analysis", "Opinion", "Market Overview"],
+    label: "분석",
+    submenu: ["기술적 분석", "기본적 분석", "전문가 의견", "시장 개요"],
   },
   {
-    label: "Charts",
-    submenu: ["Real-Time Charts", "Advanced Charts", "Forex Charts", "Crypto Charts"],
+    label: "차트",
+    submenu: ["실시간 차트", "고급 차트", "외환 차트", "암호화폐 차트"],
   },
   {
-    label: "Tools",
-    submenu: ["Economic Calendar", "Earnings Calendar", "Technical Summary", "Currency Converter", "Fibonacci Calculator"],
+    label: "도구",
+    submenu: ["경제 캘린더", "실적 캘린더", "기술적 요약", "환율 계산기", "피보나치 계산기"],
   },
 ];
 
@@ -36,17 +36,17 @@ export default function Header() {
       <div className="bg-inv-dark text-white">
         <div className="max-w-[1260px] mx-auto px-4 flex items-center justify-between h-12 text-sm">
           <div className="flex items-center gap-4">
-            <span className="text-inv-text-light hover:text-white cursor-pointer">Edition: Global</span>
+            <span className="text-inv-text-light hover:text-white cursor-pointer">에디션: 한국</span>
             <span className="text-inv-text-light">|</span>
-            <span className="text-inv-text-light hover:text-white cursor-pointer">English</span>
+            <span className="text-inv-text-light hover:text-white cursor-pointer">한국어</span>
           </div>
           <div className="flex items-center gap-3">
             <button className="text-inv-text-light hover:text-white transition-colors">
-              InvestingPro
+              프로
             </button>
             <span className="text-inv-text-light">|</span>
             <button className="text-inv-text-light hover:text-white transition-colors">
-              App
+              앱 다운로드
             </button>
           </div>
         </div>
@@ -116,7 +116,7 @@ export default function Header() {
                 <div className="absolute right-0 top-full mt-1 w-80 bg-white rounded shadow-lg border border-inv-border p-3 z-50">
                   <input
                     type="text"
-                    placeholder="Search quotes, news & more..."
+                    placeholder="종목, 뉴스 검색..."
                     className="w-full px-3 py-2 border border-inv-border rounded text-inv-text text-sm focus:outline-none focus:border-inv-blue"
                     autoFocus
                   />
@@ -126,10 +126,10 @@ export default function Header() {
 
             {/* Auth buttons */}
             <button className="hidden sm:block text-sm hover:text-orange-400 transition-colors">
-              Sign In
+              로그인
             </button>
             <button className="hidden sm:block bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded transition-colors">
-              Sign Up
+              회원가입
             </button>
 
             {/* Mobile menu button */}
@@ -165,8 +165,8 @@ export default function Header() {
                 </div>
               ))}
               <div className="flex gap-3 mt-4 pt-4 border-t border-white/10">
-                <button className="text-sm hover:text-orange-400">Sign In</button>
-                <button className="bg-orange-500 text-white text-sm font-medium px-4 py-2 rounded">Sign Up</button>
+                <button className="text-sm hover:text-orange-400">로그인</button>
+                <button className="bg-orange-500 text-white text-sm font-medium px-4 py-2 rounded">회원가입</button>
               </div>
             </div>
           </div>

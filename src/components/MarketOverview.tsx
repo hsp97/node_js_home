@@ -9,10 +9,10 @@ import type { MarketItem, MarketIndex, ExchangeRate } from "@/types/market";
 type Tab = "indices" | "commodities" | "currencies" | "crypto";
 
 const tabs: { key: Tab; label: string }[] = [
-  { key: "indices", label: "Major Indices" },
-  { key: "currencies", label: "Currencies" },
-  { key: "commodities", label: "Commodities" },
-  { key: "crypto", label: "Crypto" },
+  { key: "indices", label: "주요 지수" },
+  { key: "currencies", label: "환율" },
+  { key: "commodities", label: "원자재" },
+  { key: "crypto", label: "암호화폐" },
 ];
 
 function formatPrice(num: number): string {
@@ -69,7 +69,7 @@ export default function MarketOverview() {
   return (
     <section className="bg-white rounded-lg border border-inv-border shadow-sm">
       <div className="flex items-center justify-between px-4 pt-4 pb-0">
-        <h2 className="text-lg font-bold text-inv-text">Market Overview</h2>
+        <h2 className="text-lg font-bold text-inv-text">시장 개요</h2>
       </div>
 
       {/* Tabs */}
@@ -97,18 +97,18 @@ export default function MarketOverview() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Loading...
+            로딩 중...
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="text-inv-text-light text-xs uppercase tracking-wider">
-                <th className="text-left py-3 px-4 font-medium">Name</th>
-                <th className="text-right py-3 px-4 font-medium">Last</th>
-                <th className="text-right py-3 px-4 font-medium">High</th>
-                <th className="text-right py-3 px-4 font-medium">Low</th>
-                <th className="text-right py-3 px-4 font-medium">Chg.</th>
-                <th className="text-right py-3 px-4 font-medium">Chg. %</th>
+                <th className="text-left py-3 px-4 font-medium">종목</th>
+                <th className="text-right py-3 px-4 font-medium">현재가</th>
+                <th className="text-right py-3 px-4 font-medium">고가</th>
+                <th className="text-right py-3 px-4 font-medium">저가</th>
+                <th className="text-right py-3 px-4 font-medium">변동</th>
+                <th className="text-right py-3 px-4 font-medium">변동률</th>
               </tr>
             </thead>
             <tbody>
@@ -156,7 +156,7 @@ export default function MarketOverview() {
 
       <div className="px-4 py-3 border-t border-inv-border">
         <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
-          View All →
+          전체보기 →
         </a>
       </div>
     </section>
