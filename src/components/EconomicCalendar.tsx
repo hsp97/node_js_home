@@ -1,13 +1,16 @@
-import { economicEvents } from "@/data/mockData";
+"use client";
 
-function ImpactDot({ impact }: { impact: "high" | "medium" | "low" }) {
+import { economicEvents } from "@/data/mockData";
+import { useLocale } from "@/lib/i18n";
+
+function ImpactDot({ impact, label }: { impact: "high" | "medium" | "low"; label: string }) {
   const colors = {
     high: "bg-inv-red",
     medium: "bg-orange-400",
     low: "bg-yellow-400",
   };
   return (
-    <span className={`inline-block w-2 h-2 rounded-full ${colors[impact]}`} title={`${impact} impact`} />
+    <span className={`inline-block w-2 h-2 rounded-full ${colors[impact]}`} title={label} />
   );
 }
 
@@ -24,12 +27,14 @@ function FlagEmoji({ code }: { code: string }) {
 }
 
 export default function EconomicCalendar() {
+  const { t } = useLocale();
+
   return (
     <div className="bg-white rounded-lg border border-inv-border shadow-sm">
       <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border">
-        <h3 className="text-base font-bold text-inv-text">Economic Calendar</h3>
+        <h3 className="text-base font-bold text-inv-text">{t.calendar.title}</h3>
         <a href="#" className="text-inv-blue text-xs font-medium hover:underline">
-          Full Calendar &rarr;
+          {t.calendar.viewAll} &rarr;
         </a>
       </div>
       <div className="divide-y divide-inv-border">
@@ -38,7 +43,7 @@ export default function EconomicCalendar() {
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-mono text-inv-text-light">{event.time}</span>
               <FlagEmoji code={event.countryCode} />
-              <ImpactDot impact={event.impact} />
+              <ImpactDot impact={event.impact} label={t.calendar.impact[event.impact]} />
             </div>
             <div className="text-sm font-medium text-inv-text leading-snug">
               {event.event}
@@ -46,18 +51,18 @@ export default function EconomicCalendar() {
             <div className="flex items-center gap-3 mt-1 text-xs text-inv-text-light">
               {event.actual && (
                 <span>
-                  Actual: <strong className="text-inv-text">{event.actual}</strong>
+                  {t.calendar.actual}: <strong className="text-inv-text">{event.actual}</strong>
                 </span>
               )}
-              {event.forecast && <span>Forecast: {event.forecast}</span>}
-              {event.previous && <span>Previous: {event.previous}</span>}
+              {event.forecast && <span>{t.calendar.forecast}: {event.forecast}</span>}
+              {event.previous && <span>{t.calendar.previous}: {event.previous}</span>}
             </div>
           </div>
         ))}
       </div>
       <div className="px-4 py-3 border-t border-inv-border">
         <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
-          View All Events &rarr;
+          {t.calendar.viewAllEvents} &rarr;
         </a>
       </div>
     </div>
