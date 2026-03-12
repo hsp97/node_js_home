@@ -2,7 +2,7 @@ import { latestNews } from "@/data/mockData";
 
 export default function LatestNews() {
   const featured = latestNews[0];
-  const rest = latestNews.slice(1);
+  const rest = latestNews.slice(1, 6); // 최대 6개 (featured 1 + rest 5)
 
   return (
     <section className="bg-white rounded-lg border border-inv-border shadow-sm">

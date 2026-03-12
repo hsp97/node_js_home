@@ -52,7 +52,7 @@ export default function Watchlist() {
           <p className="text-xs text-gray-400">종목을 추가하여 실시간 시세를 확인하세요</p>
         </div>
       ) : (
-        <div className="divide-y divide-inv-border">
+        <div className="divide-y divide-inv-border max-h-[300px] overflow-y-auto">
           {watchlist.map((item) => (
             <div
               key={item.symbol}

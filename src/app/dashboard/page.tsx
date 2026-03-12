@@ -2,8 +2,9 @@ import Header from "@/components/Header";
 import MarketTicker from "@/components/MarketTicker";
 import MarketOverview from "@/components/MarketOverview";
 import LatestNews from "@/components/LatestNews";
-import Sidebar from "@/components/Sidebar";
+import VixGauge from "@/components/VixGauge";
 import Watchlist from "@/components/Watchlist";
+import EconomicCalendar from "@/components/EconomicCalendar";
 import Footer from "@/components/Footer";
 
 export default function DashboardPage() {
@@ -13,26 +14,19 @@ export default function DashboardPage() {
       <MarketTicker />
 
       <main className="flex-1 max-w-[1400px] mx-auto w-full px-4 py-6">
-        {/* Market Overview - Full width */}
-        <div className="mb-6">
-          <MarketOverview />
-        </div>
-
-        {/* 3 column layout: Watchlist | News | Sidebar */}
+        {/* 2 column layout: Left sidebar | Main content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left - Watchlist */}
-          <div className="lg:col-span-3">
+          {/* Left - VIX → Watchlist → Calendar */}
+          <div className="lg:col-span-3 space-y-5">
+            <VixGauge />
             <Watchlist />
+            <EconomicCalendar />
           </div>
 
-          {/* Center - News */}
-          <div className="lg:col-span-5">
+          {/* Right - Market Overview, News */}
+          <div className="lg:col-span-9 space-y-6">
+            <MarketOverview />
             <LatestNews />
-          </div>
-
-          {/* Right - Sidebar */}
-          <div className="lg:col-span-4">
-            <Sidebar />
           </div>
         </div>
       </main>
