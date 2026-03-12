@@ -2,15 +2,16 @@
 
 import { useCallback } from "react";
 import { useMarketData } from "@/lib/useMarketData";
+import { useLocale } from "@/lib/i18n";
 import { getVixData } from "@/lib/api";
 import type { VixLevel } from "@/types/market";
 
-const LEVEL_CONFIG: Record<VixLevel, { label: string; color: string; bg: string; emoji: string }> = {
-  extreme_greed: { label: "극단적 탐욕", color: "text-inv-green", bg: "bg-inv-green", emoji: "🟢" },
-  greed:         { label: "탐욕",       color: "text-emerald-500", bg: "bg-emerald-500", emoji: "🟡" },
-  normal:        { label: "중립",       color: "text-yellow-500", bg: "bg-yellow-500", emoji: "🟡" },
-  fear:          { label: "공포",       color: "text-orange-500", bg: "bg-orange-500", emoji: "🟠" },
-  extreme_fear:  { label: "극단적 공포", color: "text-inv-red", bg: "bg-inv-red", emoji: "🔴" },
+const LEVEL_STYLE: Record<VixLevel, { color: string; bg: string; emoji: string }> = {
+  extreme_greed: { color: "text-inv-green", bg: "bg-inv-green", emoji: "🟢" },
+  greed:         { color: "text-emerald-500", bg: "bg-emerald-500", emoji: "🟡" },
+  normal:        { color: "text-yellow-500", bg: "bg-yellow-500", emoji: "🟡" },
+  fear:          { color: "text-orange-500", bg: "bg-orange-500", emoji: "🟠" },
+  extreme_fear:  { color: "text-inv-red", bg: "bg-inv-red", emoji: "🔴" },
 };
 
 /** VIX 값에 따른 게이지 바 위치 (0~100) */
@@ -22,6 +23,7 @@ function vixToPercent(vix: number): number {
 }
 
 export default function VixGauge() {
+  const { t } = useLocale();
   const fetcher = useCallback(() => getVixData(), []);
   const { data: vix, loading, error } = useMarketData(fetcher, 60_000);
 
@@ -40,28 +42,29 @@ export default function VixGauge() {
   if (error || !vix) {
     return (
       <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
-        <h3 className="text-base font-bold text-inv-text mb-2">공포 & 탐욕 지수</h3>
-        <p className="text-sm text-inv-text-light">VIX 데이터를 불러올 수 없습니다</p>
+        <h3 className="text-base font-bold text-inv-text mb-2">{t.vixGauge.title}</h3>
+        <p className="text-sm text-inv-text-light">{t.vixGauge.error}</p>
       </div>
     );
   }
 
-  const config = LEVEL_CONFIG[vix.level];
+  const style = LEVEL_STYLE[vix.level];
+  const levelLabel = t.vixGauge.levels[vix.level];
   const pct = vixToPercent(vix.value);
 
   return (
     <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-bold text-inv-text">공포 & 탐욕 지수</h3>
-        <span className="text-xs text-inv-text-light">VIX</span>
+        <h3 className="text-base font-bold text-inv-text">{t.vixGauge.title}</h3>
+        <span className="text-xs text-inv-text-light">{t.vixGauge.vix}</span>
       </div>
 
       {/* VIX value + level */}
       <div className="flex items-end gap-3 mb-4">
         <span className="text-3xl font-bold text-inv-text">{vix.value.toFixed(2)}</span>
         <div className="pb-1">
-          <span className={`text-sm font-bold ${config.color}`}>
-            {config.emoji} {config.label}
+          <span className={`text-sm font-bold ${style.color}`}>
+            {style.emoji} {levelLabel}
           </span>
           <div className="flex items-center gap-1 mt-0.5">
             <span className={`text-xs font-medium ${vix.change >= 0 ? "text-inv-red" : "text-inv-green"}`}>
@@ -82,8 +85,8 @@ export default function VixGauge() {
         />
       </div>
       <div className="flex justify-between mt-1 text-[10px] text-inv-text-light">
-        <span>극단적 탐욕</span>
-        <span>극단적 공포</span>
+        <span>{t.vixGauge.levels.extreme_greed}</span>
+        <span>{t.vixGauge.levels.extreme_fear}</span>
       </div>
     </div>
   );

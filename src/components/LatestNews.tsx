@@ -1,15 +1,19 @@
+"use client";
+
 import { latestNews } from "@/data/mockData";
+import { useLocale } from "@/lib/i18n";
 
 export default function LatestNews() {
+  const { t } = useLocale();
   const featured = latestNews[0];
   const rest = latestNews.slice(1, 6); // 최대 6개 (featured 1 + rest 5)
 
   return (
     <section className="bg-white rounded-lg border border-inv-border shadow-sm">
       <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border">
-        <h2 className="text-lg font-bold text-inv-text">Latest News</h2>
+        <h2 className="text-lg font-bold text-inv-text">{t.news.title}</h2>
         <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
-          All News →
+          {t.news.viewAll} →
         </a>
       </div>
 
