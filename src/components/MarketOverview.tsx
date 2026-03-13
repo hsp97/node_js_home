@@ -69,13 +69,13 @@ export default function MarketOverview() {
   const { items: data, loading } = dataMap[activeTab];
 
   return (
-    <section className="bg-white rounded-lg border border-inv-border shadow-sm">
-      <div className="flex items-center justify-between px-4 pt-4 pb-0">
+    <section className="h-full bg-white rounded-lg border border-inv-border shadow-sm flex flex-col">
+      <div className="flex items-center justify-between px-4 pt-4 pb-0 shrink-0">
         <h2 className="text-lg font-bold text-inv-text">{t.marketOverview.title}</h2>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-inv-border px-4 mt-2">
+      <div className="flex border-b border-inv-border px-4 mt-2 shrink-0">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -92,7 +92,7 @@ export default function MarketOverview() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="flex-1 overflow-auto">
         {loading && data.length === 0 ? (
           <div className="flex items-center justify-center py-12 text-sm text-inv-text-light">
             <svg className="animate-spin h-5 w-5 mr-2 text-inv-blue" fill="none" viewBox="0 0 24 24">
@@ -156,7 +156,7 @@ export default function MarketOverview() {
         )}
       </div>
 
-      <div className="px-4 py-3 border-t border-inv-border">
+      <div className="px-4 py-3 border-t border-inv-border shrink-0">
         <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
           {t.marketOverview.viewAll} →
         </a>
