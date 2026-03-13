@@ -42,7 +42,7 @@ const defaultLayout: Layout[] = [
 export default function DashboardGrid() {
   const { locale } = useLocale();
   const [layout, setLayout] = useState<Layout[]>(defaultLayout);
-  const [containerWidth, setContainerWidth] = useState(1200);
+  const [containerWidth, setContainerWidth] = useState(1768);
   const [mounted, setMounted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
