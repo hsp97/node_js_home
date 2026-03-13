@@ -9,7 +9,7 @@ export default function DashboardPage() {
       <Header />
       <MarketTicker />
 
-      <main className="flex-1 max-w-[1400px] mx-auto w-full px-4 py-6">
+      <main className="flex-1 max-w-[1800px] mx-auto w-full px-4 py-6">
         <DashboardGrid />
       </main>
 
