@@ -32,9 +32,9 @@ const widgets: WidgetConfig[] = [
 ];
 
 const defaultLayout: Layout[] = [
-  { i: "vix", x: 0, y: 0, w: 3, h: 7, minW: 2, minH: 6 },
-  { i: "watchlist", x: 0, y: 7, w: 3, h: 10, minW: 2, minH: 8 },
-  { i: "calendar", x: 0, y: 17, w: 3, h: 12, minW: 2, minH: 10 },
+  { i: "vix", x: 0, y: 0, w: 3, h: 4, minW: 2, minH: 6 },
+  { i: "watchlist", x: 0, y: 7, w: 3, h: 11, minW: 2, minH: 8 },
+  { i: "calendar", x: 0, y: 17, w: 3, h: 15, minW: 2, minH: 10 },
   { i: "market", x: 3, y: 0, w: 9, h: 14, minW: 4, minH: 12 },
   { i: "news", x: 3, y: 14, w: 9, h: 16, minW: 4, minH: 14 },
 ];
