@@ -29,7 +29,7 @@ export default function VixGauge() {
 
   if (loading && !vix) {
     return (
-      <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
+      <div className="h-full bg-white rounded-lg border border-inv-border shadow-sm p-5 flex flex-col justify-center">
         <div className="animate-pulse space-y-3">
           <div className="h-4 bg-gray-200 rounded w-1/2" />
           <div className="h-8 bg-gray-200 rounded" />
@@ -41,7 +41,7 @@ export default function VixGauge() {
 
   if (error || !vix) {
     return (
-      <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
+      <div className="h-full bg-white rounded-lg border border-inv-border shadow-sm p-5 flex flex-col justify-center">
         <h3 className="text-base font-bold text-inv-text mb-2">{t.vixGauge.title}</h3>
         <p className="text-sm text-inv-text-light">{t.vixGauge.error}</p>
       </div>
@@ -53,40 +53,42 @@ export default function VixGauge() {
   const pct = vixToPercent(vix.value);
 
   return (
-    <div className="bg-white rounded-lg border border-inv-border shadow-sm p-5">
+    <div className="h-full bg-white rounded-lg border border-inv-border shadow-sm p-5 flex flex-col">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-base font-bold text-inv-text">{t.vixGauge.title}</h3>
         <span className="text-xs text-inv-text-light">{t.vixGauge.vix}</span>
       </div>
 
       {/* VIX value + level */}
-      <div className="flex items-end gap-3 mb-4">
-        <span className="text-3xl font-bold text-inv-text">{vix.value.toFixed(2)}</span>
-        <div className="pb-1">
-          <span className={`text-sm font-bold ${style.color}`}>
-            {style.emoji} {levelLabel}
-          </span>
-          <div className="flex items-center gap-1 mt-0.5">
-            <span className={`text-xs font-medium ${vix.change >= 0 ? "text-inv-red" : "text-inv-green"}`}>
-              {vix.change >= 0 ? "+" : ""}{vix.change.toFixed(2)}
+      <div className="flex-1 flex flex-col justify-center">
+        <div className="flex items-end gap-3 mb-4">
+          <span className="text-3xl font-bold text-inv-text">{vix.value.toFixed(2)}</span>
+          <div className="pb-1">
+            <span className={`text-sm font-bold ${style.color}`}>
+              {style.emoji} {levelLabel}
             </span>
-            <span className={`text-xs ${vix.changePercent >= 0 ? "text-inv-red" : "text-inv-green"}`}>
-              ({vix.changePercent >= 0 ? "+" : ""}{vix.changePercent.toFixed(2)}%)
-            </span>
+            <div className="flex items-center gap-1 mt-0.5">
+              <span className={`text-xs font-medium ${vix.change >= 0 ? "text-inv-red" : "text-inv-green"}`}>
+                {vix.change >= 0 ? "+" : ""}{vix.change.toFixed(2)}
+              </span>
+              <span className={`text-xs ${vix.changePercent >= 0 ? "text-inv-red" : "text-inv-green"}`}>
+                ({vix.changePercent >= 0 ? "+" : ""}{vix.changePercent.toFixed(2)}%)
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Gauge bar */}
-      <div className="relative h-3 rounded-full overflow-hidden bg-gradient-to-r from-inv-green via-yellow-400 to-inv-red">
-        <div
-          className="absolute top-0 h-full w-1 bg-white border border-gray-800 rounded-full shadow-md transition-all duration-700"
-          style={{ left: `${pct}%` }}
-        />
-      </div>
-      <div className="flex justify-between mt-1 text-[10px] text-inv-text-light">
-        <span>{t.vixGauge.levels.extreme_greed}</span>
-        <span>{t.vixGauge.levels.extreme_fear}</span>
+        {/* Gauge bar */}
+        <div className="relative h-3 rounded-full overflow-hidden bg-gradient-to-r from-inv-green via-yellow-400 to-inv-red">
+          <div
+            className="absolute top-0 h-full w-1 bg-white border border-gray-800 rounded-full shadow-md transition-all duration-700"
+            style={{ left: `${pct}%` }}
+          />
+        </div>
+        <div className="flex justify-between mt-1 text-[10px] text-inv-text-light">
+          <span>{t.vixGauge.levels.extreme_greed}</span>
+          <span>{t.vixGauge.levels.extreme_fear}</span>
+        </div>
       </div>
     </div>
   );

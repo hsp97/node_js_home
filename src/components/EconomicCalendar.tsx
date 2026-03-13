@@ -30,14 +30,14 @@ export default function EconomicCalendar() {
   const { t } = useLocale();
 
   return (
-    <div className="bg-white rounded-lg border border-inv-border shadow-sm">
-      <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border">
+    <div className="h-full bg-white rounded-lg border border-inv-border shadow-sm flex flex-col">
+      <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border shrink-0">
         <h3 className="text-base font-bold text-inv-text">{t.calendar.title}</h3>
         <a href="#" className="text-inv-blue text-xs font-medium hover:underline">
           {t.calendar.viewAll} &rarr;
         </a>
       </div>
-      <div className="divide-y divide-inv-border">
+      <div className="flex-1 divide-y divide-inv-border overflow-y-auto">
         {economicEvents.map((event, idx) => (
           <div key={idx} className="px-4 py-3 hover:bg-blue-50/30 transition-colors">
             <div className="flex items-center gap-2 mb-1">
@@ -60,7 +60,7 @@ export default function EconomicCalendar() {
           </div>
         ))}
       </div>
-      <div className="px-4 py-3 border-t border-inv-border">
+      <div className="px-4 py-3 border-t border-inv-border shrink-0">
         <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
           {t.calendar.viewAllEvents} &rarr;
         </a>
