@@ -26,14 +26,16 @@ export interface LoginResult {
 
 /** 텔레그램 Chat ID로 로그인 */
 export async function login(chatId: string): Promise<LoginResult> {
-  const res = await fetch(`${API_BASE}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatId }),
-  });
+  // TODO: 백엔드 auth/login 구현 후 아래 임시 코드 제거
+  return { success: true, data: { chatId } };
 
-  const json = await res.json();
-  return json;
+  // const res = await fetch(`${API_BASE}/auth/login`, {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ chatId }),
+  // });
+  // const json = await res.json();
+  // return json;
 }
 
 // ── Market Data ──
