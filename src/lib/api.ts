@@ -1,4 +1,4 @@
-import type { ApiResponse, MarketIndex, ExchangeRate, VixData } from "@/types/market";
+import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem } from "@/types/market";
 
 // Next.js rewrites /api/* → http://localhost:4000/* 으로 프록시
 // 클라이언트에서 직접 localhost:4000 호출 시 CORS 문제 방지
@@ -38,6 +38,13 @@ export async function login(chatId: string): Promise<LoginResult> {
   // return json;
 }
 
+// ── Watchlist ──
+
+/** 사용자 관심종목 (user=1 하드코딩, 추후 chatId 기반으로 변경) */
+export async function getWatchlist(): Promise<WatchlistItem[]> {
+  return fetchApi<WatchlistItem[]>("/stock/wishlist");
+}
+
 // ── Market Data ──
 
 /** 주요 지수 (나스닥, 다우, S&P500, 러셀2000) */
@@ -53,4 +60,19 @@ export async function getExchangeRates(): Promise<ExchangeRate[]> {
 /** VIX 공포탐욕 지수 */
 export async function getVixData(): Promise<VixData> {
   return fetchApi<VixData>("/market/vix");
+}
+
+/** 원자재 (Gold, Silver, WTI, Brent, Natural Gas 등) */
+export async function getCommodities(): Promise<MarketItem[]> {
+  return fetchApi<MarketItem[]>("/market/commodities");
+}
+
+/** 암호화폐 (BTC, ETH, BNB, SOL 등) */
+export async function getCryptoList(): Promise<MarketItem[]> {
+  return fetchApi<MarketItem[]>("/market/crypto");
+}
+
+/** 최신 금융 뉴스 */
+export async function getLatestNews(): Promise<NewsItem[]> {
+  return fetchApi<NewsItem[]>("/market/news");
 }
