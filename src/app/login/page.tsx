@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api";
+import { setSessionCookie } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,8 +30,9 @@ export default function LoginPage() {
     try {
       const result = await login(trimmed);
 
-      if (result.success) {
-        // 로그인 성공 → 대시보드로 이동
+      if (result.success && result.data?.chatId) {
+        // 로그인 성공 → 세션 쿠키 저장 후 대시보드로 이동
+        setSessionCookie(result.data.chatId);
         router.push("/dashboard");
       } else {
         // 서버에서 반환한 실패 메시지 표시
