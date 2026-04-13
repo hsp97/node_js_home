@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { useMarketData } from "@/lib/useMarketData";
 import { useLocale } from "@/lib/i18n";
-import { getMarketIndices, getExchangeRates } from "@/lib/api";
+import { getMarketIndices, getExchangeRates, getCommodities, getCryptoList } from "@/lib/api";
 import { commodities, crypto } from "@/data/mockData";
 import type { MarketItem, MarketIndex, ExchangeRate } from "@/types/market";
 
@@ -50,20 +50,25 @@ export default function MarketOverview() {
 
   const fetchIndices = useCallback(() => getMarketIndices(), []);
   const fetchRates = useCallback(() => getExchangeRates(), []);
+  const fetchCommodities = useCallback(() => getCommodities(), []);
+  const fetchCrypto = useCallback(() => getCryptoList(), []);
 
   const { data: apiIndices, loading: indicesLoading } = useMarketData(fetchIndices, 30_000);
   const { data: apiRates, loading: ratesLoading } = useMarketData(fetchRates, 30_000);
+  const { data: apiCommodities, loading: commoditiesLoading } = useMarketData(fetchCommodities, 60_000);
+  const { data: apiCrypto, loading: cryptoLoading } = useMarketData(fetchCrypto, 30_000);
 
-  // 실제 API 데이터를 MarketItem 형태로 변환, 없으면 빈 배열
+  // 실제 API 데이터를 MarketItem 형태로 변환, 없으면 빈 배열 또는 mock fallback
   const indicesItems = apiIndices ? indicesToItems(apiIndices) : [];
   const currencyItems = apiRates ? ratesToItems(apiRates) : [];
+  const commoditiesItems = apiCommodities ?? commodities;
+  const cryptoItems = apiCrypto ?? crypto;
 
-  // 탭별 데이터 맵 (commodities, crypto는 아직 mock)
   const dataMap: Record<Tab, { items: MarketItem[]; loading: boolean }> = {
     indices: { items: indicesItems, loading: indicesLoading },
     currencies: { items: currencyItems, loading: ratesLoading },
-    commodities: { items: commodities, loading: false },
-    crypto: { items: crypto, loading: false },
+    commodities: { items: commoditiesItems, loading: commoditiesLoading && !apiCommodities },
+    crypto: { items: cryptoItems, loading: cryptoLoading && !apiCrypto },
   };
 
   const { items: data, loading } = dataMap[activeTab];

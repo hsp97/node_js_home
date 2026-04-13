@@ -1,5 +1,13 @@
 // ── 프론트 UI용 범용 타입 ──
 
+export interface WatchlistItem {
+  symbol: string;
+  name: string;
+  price: number;
+  change: number;
+  changePercent: number;
+}
+
 export interface MarketItem {
   name: string;
   last: number;
