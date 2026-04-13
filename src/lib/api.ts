@@ -45,7 +45,7 @@ export async function getMarketIndices(): Promise<MarketIndex[]> {
 
 /** 환율 (USDKRW, JPYKRW) */
 export async function getExchangeRates(): Promise<ExchangeRate[]> {
-  return fetchApi<ExchangeRate[]>("/market/exchange-rates");
+  return fetchApi<ExchangeRate[]>("/market/exchange");
 }
 
 /** VIX 공포탐욕 지수 */
