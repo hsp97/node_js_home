@@ -1,4 +1,4 @@
-import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem, CommodityData, NewsDataApi } from "@/types/market";
+import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem, CommodityData, NewsDataApi, EconomicCalendarData } from "@/types/market";
 
 // Next.js rewrites /api/* → http://localhost:4000/* 으로 프록시
 // 클라이언트에서 직접 localhost:4000 호출 시 CORS 문제 방지
@@ -75,4 +75,9 @@ export async function getCryptoList(): Promise<CommodityData[]> {
 /** 최신 금융 뉴스 */
 export async function getLatestNews(): Promise<NewsDataApi[]> {
   return fetchApi<NewsDataApi[]>("/market/news");
+}
+
+/** 경제 캘린더 이벤트 */
+export async function getEconomicCalendar(): Promise<EconomicCalendarData> {
+  return fetchApi<EconomicCalendarData>("/market/calendar");
 }

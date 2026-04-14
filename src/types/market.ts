@@ -107,3 +107,20 @@ export interface CommodityData {
   low?: number;
   updatedAt: string;
 }
+
+/** 경제 캘린더 이벤트 (API 응답) */
+export interface EconomicCalendarEvent {
+  time: string;
+  country: string;
+  event: string;
+  impact: string;
+  actual: number | null;
+  estimate: number | null;
+  prev: number | null;
+  unit: string;
+}
+
+/** 경제 캘린더 데이터 */
+export interface EconomicCalendarData {
+  events: EconomicCalendarEvent[];
+}
