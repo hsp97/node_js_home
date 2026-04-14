@@ -5,7 +5,7 @@ import { useMarketData } from "@/lib/useMarketData";
 import { useLocale } from "@/lib/i18n";
 import { getMarketIndices, getExchangeRates, getCommodities, getCryptoList } from "@/lib/api";
 import { commodities, crypto } from "@/data/mockData";
-import type { MarketItem, MarketIndex, ExchangeRate } from "@/types/market";
+import type { MarketItem, MarketIndex, ExchangeRate, CommodityData } from "@/types/market";
 
 type Tab = "indices" | "commodities" | "currencies" | "crypto";
 
@@ -48,6 +48,18 @@ function ratesToItems(arr: ExchangeRate[]): MarketItem[] {
   }));
 }
 
+/** API CommodityData → UI MarketItem */
+function commodityToItems(arr: CommodityData[]): MarketItem[] {
+  return arr.map((c) => ({
+    name: c.name,
+    last: c.price,
+    change: c.change,
+    changePercent: c.changePercent,
+    high: c.high,
+    low: c.low,
+  }));
+}
+
 export default function MarketOverview() {
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState<Tab>("indices");
@@ -72,8 +84,8 @@ export default function MarketOverview() {
   // 실제 API 데이터를 MarketItem 형태로 변환, 없으면 빈 배열 또는 mock fallback
   const indicesItems = apiIndices ? indicesToItems(apiIndices) : [];
   const currencyItems = apiRates ? ratesToItems(apiRates) : [];
-  const commoditiesItems = apiCommodities ?? commodities;
-  const cryptoItems = apiCrypto ?? crypto;
+  const commoditiesItems = apiCommodities ? commodityToItems(apiCommodities) : commodities;
+  const cryptoItems = apiCrypto ? commodityToItems(apiCrypto) : crypto;
 
   const dataMap: Record<Tab, { items: MarketItem[]; loading: boolean }> = {
     indices: { items: indicesItems, loading: indicesLoading },
