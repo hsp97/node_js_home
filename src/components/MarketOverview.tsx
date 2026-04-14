@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { useMarketData } from "@/lib/useMarketData";
 import { useLocale } from "@/lib/i18n";
 import { getMarketIndices, getExchangeRates, getCommodities, getCryptoList } from "@/lib/api";
-import { commodities, crypto } from "@/data/mockData";
 import type { MarketItem, MarketIndex, ExchangeRate, CommodityData } from "@/types/market";
 
 type Tab = "indices" | "commodities" | "currencies" | "crypto";
@@ -81,11 +80,11 @@ export default function MarketOverview() {
   const { data: apiCommodities, loading: commoditiesLoading } = useMarketData(fetchCommodities, 60_000);
   const { data: apiCrypto, loading: cryptoLoading } = useMarketData(fetchCrypto, 30_000);
 
-  // 실제 API 데이터를 MarketItem 형태로 변환, 없으면 빈 배열 또는 mock fallback
+  // 실제 API 데이터를 MarketItem 형태로 변환, 없으면 빈 배열
   const indicesItems = apiIndices ? indicesToItems(apiIndices) : [];
   const currencyItems = apiRates ? ratesToItems(apiRates) : [];
-  const commoditiesItems = apiCommodities ? commodityToItems(apiCommodities) : commodities;
-  const cryptoItems = apiCrypto ? commodityToItems(apiCrypto) : crypto;
+  const commoditiesItems = apiCommodities ? commodityToItems(apiCommodities) : [];
+  const cryptoItems = apiCrypto ? commodityToItems(apiCrypto) : [];
 
   const dataMap: Record<Tab, { items: MarketItem[]; loading: boolean }> = {
     indices: { items: indicesItems, loading: indicesLoading },
@@ -128,6 +127,13 @@ export default function MarketOverview() {
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
             {t.marketOverview.loading}
+          </div>
+        ) : data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-sm text-inv-text-light">
+            <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <p>데이터가 없습니다</p>
           </div>
         ) : (
           <table className="w-full text-sm">
