@@ -1,4 +1,4 @@
-import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem } from "@/types/market";
+import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem, CommodityData } from "@/types/market";
 
 // Next.js rewrites /api/* → http://localhost:4000/* 으로 프록시
 // 클라이언트에서 직접 localhost:4000 호출 시 CORS 문제 방지
@@ -63,13 +63,13 @@ export async function getVixData(): Promise<VixData> {
 }
 
 /** 원자재 (Gold, Silver, WTI, Brent, Natural Gas 등) */
-export async function getCommodities(): Promise<MarketItem[]> {
-  return fetchApi<MarketItem[]>("/market/commodities");
+export async function getCommodities(): Promise<CommodityData[]> {
+  return fetchApi<CommodityData[]>("/market/commodities");
 }
 
 /** 암호화폐 (BTC, ETH, BNB, SOL 등) */
-export async function getCryptoList(): Promise<MarketItem[]> {
-  return fetchApi<MarketItem[]>("/market/crypto");
+export async function getCryptoList(): Promise<CommodityData[]> {
+  return fetchApi<CommodityData[]>("/market/crypto");
 }
 
 /** 최신 금융 뉴스 */

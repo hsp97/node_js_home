@@ -82,3 +82,16 @@ export interface MarketIndex {
   changePercent: number;
   updatedAt: string;
 }
+
+/** 원자재 / 암호화폐 API 응답 */
+export interface CommodityData {
+  code: string;
+  name: string;
+  price: number;
+  previousClose: number;
+  change: number;
+  changePercent: number;
+  high?: number;
+  low?: number;
+  updatedAt: string;
+}
