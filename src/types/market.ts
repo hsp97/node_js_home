@@ -40,25 +40,21 @@ export interface NewsDataApi {
   category: string;
 }
 
-/** 경제 캘린더 API 응답*/
+/** 경제 캘린더 이벤트 (API 응답) */
 export interface EconomicEvent {
   time: string;
   country: string;
-  countryCode: string;
   event: string;
-  impact: "high" | "medium" | "low";
-  actual?: string;
-  forecast?: string;
-  previous?: string;
+  impact: string;
+  actual: number | null;
+  estimate: number | null;
+  prev: number | null;
+  unit: string;
 }
 
+/** 경제 캘린더 데이터 */
 export interface EconomicCalendarData {
-  code: string;
-  name: string;
   events: EconomicEvent[];
-  from: string;
-  to: string;
-  updatedAt: string;
 }
 
 // ── NestJS API 응답 타입 ──
