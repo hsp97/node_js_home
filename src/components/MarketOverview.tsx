@@ -9,10 +9,21 @@ import type { MarketItem, MarketIndex, ExchangeRate } from "@/types/market";
 
 type Tab = "indices" | "commodities" | "currencies" | "crypto";
 
-function formatPrice(num: number): string {
+function formatPrice(num: number | undefined | null): string {
+  if (num == null) return "-";
   if (num >= 10000) return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   if (num >= 100) return num.toFixed(2);
   return num.toFixed(2);
+}
+
+function formatChange(num: number | undefined | null): string {
+  if (num == null) return "-";
+  return `${num >= 0 ? "+" : ""}${num.toFixed(2)}`;
+}
+
+function formatChangePercent(num: number | undefined | null): string {
+  if (num == null) return "-";
+  return `${num >= 0 ? "+" : ""}${num.toFixed(2)}%`;
 }
 
 /** API MarketIndex → UI MarketItem */
@@ -138,20 +149,18 @@ export default function MarketOverview() {
                   <td className="py-3 px-4 text-right text-inv-text-light">
                     {item.low ? formatPrice(item.low) : "-"}
                   </td>
-                  <td className={`py-3 px-4 text-right font-medium ${item.change >= 0 ? "text-inv-green" : "text-inv-red"}`}>
-                    {item.change >= 0 ? "+" : ""}
-                    {item.change.toFixed(2)}
+                  <td className={`py-3 px-4 text-right font-medium ${(item.change ?? 0) >= 0 ? "text-inv-green" : "text-inv-red"}`}>
+                    {formatChange(item.change)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span
                       className={`inline-block px-2 py-1 rounded text-xs font-bold ${
-                        item.changePercent >= 0
+                        (item.changePercent ?? 0) >= 0
                           ? "bg-inv-green/10 text-inv-green"
                           : "bg-inv-red/10 text-inv-red"
                       }`}
                     >
-                      {item.changePercent >= 0 ? "+" : ""}
-                      {item.changePercent.toFixed(2)}%
+                      {formatChangePercent(item.changePercent)}
                     </span>
                   </td>
                 </tr>
