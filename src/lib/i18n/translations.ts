@@ -61,6 +61,8 @@ export const translations = {
       title: "경제 캘린더",
       viewAll: "전체보기",
       viewAllEvents: "모든 이벤트 보기",
+      showLess: "기본 보기로 돌아가기",
+      noEvents: "표시할 이벤트가 없습니다",
       impact: {
         high: "높음",
         medium: "중간",
@@ -158,6 +160,8 @@ export const translations = {
       title: "Economic Calendar",
       viewAll: "View All",
       viewAllEvents: "View All Events",
+      showLess: "Show Less",
+      noEvents: "No events to display",
       impact: {
         high: "High",
         medium: "Medium",

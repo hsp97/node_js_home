@@ -1,7 +1,11 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { economicEvents } from "@/data/mockData";
 import { useLocale } from "@/lib/i18n";
+import type { EconomicEvent } from "@/types/market";
+
+const DEFAULT_LIMIT = 10;
 
 function ImpactDot({ impact, label }: { impact: "high" | "medium" | "low"; label: string }) {
   const colors = {
@@ -28,42 +32,71 @@ function FlagEmoji({ code }: { code: string }) {
 
 export default function EconomicCalendar() {
   const { t } = useLocale();
+  const [showAll, setShowAll] = useState(false);
+
+  // 기본: 중간/높음 중요도만 최대 10개
+  // 전체보기: 모든 이벤트
+  const displayedEvents = useMemo<EconomicEvent[]>(() => {
+    if (showAll) return economicEvents;
+    return economicEvents
+      .filter((e) => e.impact === "high" || e.impact === "medium")
+      .slice(0, DEFAULT_LIMIT);
+  }, [showAll]);
+
+  function toggleShowAll() {
+    setShowAll((prev) => !prev);
+  }
 
   return (
     <div className="h-full bg-white rounded-lg border border-inv-border shadow-sm flex flex-col">
       <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-inv-border shrink-0">
         <h3 className="text-base font-bold text-inv-text">{t.calendar.title}</h3>
-        <a href="#" className="text-inv-blue text-xs font-medium hover:underline">
-          {t.calendar.viewAll} &rarr;
-        </a>
+        <button
+          onClick={toggleShowAll}
+          className="text-inv-blue text-xs font-medium hover:underline"
+        >
+          {showAll ? t.calendar.showLess : t.calendar.viewAll} &rarr;
+        </button>
       </div>
       <div className="flex-1 divide-y divide-inv-border overflow-y-auto">
-        {economicEvents.map((event, idx) => (
-          <div key={idx} className="px-4 py-3 hover:bg-blue-50/30 transition-colors">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-mono text-inv-text-light">{event.time}</span>
-              <FlagEmoji code={event.countryCode} />
-              <ImpactDot impact={event.impact} label={t.calendar.impact[event.impact]} />
-            </div>
-            <div className="text-sm font-medium text-inv-text leading-snug">
-              {event.event}
-            </div>
-            <div className="flex items-center gap-3 mt-1 text-xs text-inv-text-light">
-              {event.actual && (
-                <span>
-                  {t.calendar.actual}: <strong className="text-inv-text">{event.actual}</strong>
-                </span>
-              )}
-              {event.forecast && <span>{t.calendar.forecast}: {event.forecast}</span>}
-              {event.previous && <span>{t.calendar.previous}: {event.previous}</span>}
-            </div>
+        {displayedEvents.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-sm text-inv-text-light">
+            <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p>{t.calendar.noEvents}</p>
           </div>
-        ))}
+        ) : (
+          displayedEvents.map((event, idx) => (
+            <div key={idx} className="px-4 py-3 hover:bg-blue-50/30 transition-colors">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-mono text-inv-text-light">{event.time}</span>
+                <FlagEmoji code={event.countryCode} />
+                <ImpactDot impact={event.impact} label={t.calendar.impact[event.impact]} />
+              </div>
+              <div className="text-sm font-medium text-inv-text leading-snug">
+                {event.event}
+              </div>
+              <div className="flex items-center gap-3 mt-1 text-xs text-inv-text-light">
+                {event.actual && (
+                  <span>
+                    {t.calendar.actual}: <strong className="text-inv-text">{event.actual}</strong>
+                  </span>
+                )}
+                {event.forecast && <span>{t.calendar.forecast}: {event.forecast}</span>}
+                {event.previous && <span>{t.calendar.previous}: {event.previous}</span>}
+              </div>
+            </div>
+          ))
+        )}
       </div>
       <div className="px-4 py-3 border-t border-inv-border shrink-0">
-        <a href="#" className="text-inv-blue text-sm font-medium hover:underline">
-          {t.calendar.viewAllEvents} &rarr;
-        </a>
+        <button
+          onClick={toggleShowAll}
+          className="text-inv-blue text-sm font-medium hover:underline"
+        >
+          {showAll ? t.calendar.showLess : t.calendar.viewAllEvents} &rarr;
+        </button>
       </div>
     </div>
   );
