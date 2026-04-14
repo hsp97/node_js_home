@@ -40,6 +40,7 @@ export interface NewsDataApi {
   category: string;
 }
 
+/** 경제 캘린더 API 응답*/
 export interface EconomicEvent {
   time: string;
   country: string;
@@ -49,6 +50,15 @@ export interface EconomicEvent {
   actual?: string;
   forecast?: string;
   previous?: string;
+}
+
+export interface EconomicCalendarData {
+  code: string;
+  name: string;
+  events: EconomicEvent[];
+  from: string;
+  to: string;
+  updatedAt: string;
 }
 
 // ── NestJS API 응답 타입 ──
