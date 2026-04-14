@@ -6,6 +6,7 @@ const nextConfig = {
         // /api/market/* → NestJS localhost:4000/market/*
         source: "/api/:path*",
         destination: "http://localhost:4000/:path*",
+        //destination: "https://phs.it.kr/:path*",
       },
     ];
   },

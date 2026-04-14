@@ -4,7 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useMarketData } from "@/lib/useMarketData";
 import { useLocale } from "@/lib/i18n";
 import { getEconomicCalendar } from "@/lib/api";
-import type { EconomicCalendarData, EconomicCalendarEvent } from "@/types/market";
+import type { EconomicCalendarData, EconomicEvent } from "@/types/market";
 
 const DEFAULT_LIMIT = 10;
 
@@ -52,7 +52,7 @@ export default function EconomicCalendar() {
 
   // 기본: 중간/높음 중요도만 최대 10개
   // 전체보기: 모든 이벤트
-  const displayedEvents = useMemo<EconomicCalendarEvent[]>(() => {
+  const displayedEvents = useMemo<EconomicEvent[]>(() => {
     if (!data?.events) return [];
     if (showAll) return data.events;
     return data.events

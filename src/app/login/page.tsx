@@ -28,6 +28,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      router.push("/dashboard");
+      
       const result = await login(trimmed);
 
       if (result.success && result.data?.chatId) {

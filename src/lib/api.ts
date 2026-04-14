@@ -54,7 +54,7 @@ export async function getMarketIndices(): Promise<MarketIndex[]> {
 
 /** 환율 (USDKRW, JPYKRW) */
 export async function getExchangeRates(): Promise<ExchangeRate[]> {
-  return fetchApi<ExchangeRate[]>("/market/exchange-rates");
+  return fetchApi<ExchangeRate[]>("/market/exchange");
 }
 
 /** VIX 공포탐욕 지수 */
@@ -77,7 +77,7 @@ export async function getLatestNews(): Promise<NewsDataApi[]> {
   return fetchApi<NewsDataApi[]>("/market/news");
 }
 
-/** 경제 캘린더 이벤트 */
+/** 경제 캘린더 */
 export async function getEconomicCalendar(): Promise<EconomicCalendarData> {
   return fetchApi<EconomicCalendarData>("/market/calendar");
 }
