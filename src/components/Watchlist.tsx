@@ -5,37 +5,21 @@ import { useLocale } from "@/lib/i18n";
 import { getWatchlist } from "@/lib/api";
 import type { WatchlistItem } from "@/types/market";
 
-// API 오류 또는 관심종목 없을 때 표시할 빅7 기본값
-const BIG_SEVEN_FALLBACK: WatchlistItem[] = [
-  { symbol: "AAPL", name: "Apple Inc.", price: 227.63, change: 3.45, changePercent: 1.54 },
-  { symbol: "MSFT", name: "Microsoft Corp.", price: 411.22, change: -2.18, changePercent: -0.53 },
-  { symbol: "GOOGL", name: "Alphabet Inc.", price: 191.62, change: -15.40, changePercent: -7.44 },
-  { symbol: "NVDA", name: "NVIDIA Corp.", price: 878.35, change: 24.67, changePercent: 2.89 },
-  { symbol: "AMZN", name: "Amazon.com Inc.", price: 209.72, change: 1.53, changePercent: 0.73 },
-  { symbol: "META", name: "Meta Platforms Inc.", price: 658.33, change: 5.42, changePercent: 0.83 },
-  { symbol: "TSLA", name: "Tesla Inc.", price: 248.50, change: -8.30, changePercent: -3.23 },
-];
-
 export default function Watchlist() {
   const { t } = useLocale();
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isFallback, setIsFallback] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     getWatchlist()
       .then((data) => {
-        if (data.length > 0) {
-          setWatchlist(data);
-          setIsFallback(false);
-        } else {
-          setWatchlist(BIG_SEVEN_FALLBACK);
-          setIsFallback(true);
-        }
+        setWatchlist(data);
+        setError(false);
       })
       .catch(() => {
-        setWatchlist(BIG_SEVEN_FALLBACK);
-        setIsFallback(true);
+        setWatchlist([]);
+        setError(true);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -61,19 +45,19 @@ export default function Watchlist() {
         </button>
       </div>
 
-      {/* 폴백 안내 배너 */}
-      {isFallback && !loading && (
-        <div className="px-4 py-2 bg-blue-50 border-b border-blue-100 shrink-0">
-          <p className="text-xs text-inv-blue">관심종목이 없어 미국 주요 종목을 표시합니다</p>
-        </div>
-      )}
-
       {loading ? (
         <div className="flex-1 flex items-center justify-center">
           <svg className="animate-spin h-5 w-5 text-inv-blue" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
+        </div>
+      ) : error ? (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <svg className="w-12 h-12 text-inv-red/50 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <p className="text-sm text-inv-text-light">데이터를 불러올 수 없습니다</p>
         </div>
       ) : watchlist.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
@@ -116,17 +100,15 @@ export default function Watchlist() {
                     </span>
                   </div>
                 </div>
-                {!isFallback && (
-                  <button
-                    onClick={() => handleRemove(item.symbol)}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-inv-red transition-all"
-                    title={t.watchlist.remove}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                )}
+                <button
+                  onClick={() => handleRemove(item.symbol)}
+                  className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-inv-red transition-all"
+                  title={t.watchlist.remove}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
             </div>
           ))}

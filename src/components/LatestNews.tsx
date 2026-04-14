@@ -3,7 +3,6 @@
 import { useCallback } from "react";
 import { useMarketData } from "@/lib/useMarketData";
 import { getLatestNews } from "@/lib/api";
-import { latestNews as mockNews } from "@/data/mockData";
 import { useLocale } from "@/lib/i18n";
 import type { NewsItem, NewsDataApi } from "@/types/market";
 
@@ -27,8 +26,8 @@ export default function LatestNews() {
   const fetchNews = useCallback(() => getLatestNews(), []);
   const { data, loading } = useMarketData(fetchNews, 60_000);
 
-  // API 응답 변환 후 사용, 실패 시 mock 유지
-  const newsList = data ? newsToItems(data) : mockNews;
+  // API 응답 변환 후 사용
+  const newsList = data ? newsToItems(data) : [];
   const featured = newsList[0];
   const rest = newsList.slice(1, 6);
 
@@ -47,6 +46,13 @@ export default function LatestNews() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
+        </div>
+      ) : newsList.length === 0 ? (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <svg className="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+          <p className="text-sm text-inv-text-light">뉴스가 없습니다</p>
         </div>
       ) : (
         <>
