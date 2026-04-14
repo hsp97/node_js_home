@@ -26,6 +26,18 @@ export interface NewsItem {
   time: string;
   imageUrl?: string;
   category: string;
+  link?: string;
+}
+
+/** 뉴스 API 응답 */
+export interface NewsDataApi {
+  title: string;
+  source: string;
+  link: string;
+  time: string;
+  thumbnailUrl?: string;
+  relatedTickers?: string[];
+  category: string;
 }
 
 export interface EconomicEvent {

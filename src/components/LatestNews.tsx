@@ -5,6 +5,21 @@ import { useMarketData } from "@/lib/useMarketData";
 import { getLatestNews } from "@/lib/api";
 import { latestNews as mockNews } from "@/data/mockData";
 import { useLocale } from "@/lib/i18n";
+import type { NewsItem, NewsDataApi } from "@/types/market";
+
+/** API NewsDataApi → UI NewsItem */
+function newsToItems(arr: NewsDataApi[]): NewsItem[] {
+  return arr.map((n, idx) => ({
+    id: idx + 1,
+    title: n.title,
+    summary: "",
+    source: n.source,
+    time: n.time,
+    imageUrl: n.thumbnailUrl,
+    category: n.category,
+    link: n.link,
+  }));
+}
 
 export default function LatestNews() {
   const { t } = useLocale();
@@ -12,8 +27,8 @@ export default function LatestNews() {
   const fetchNews = useCallback(() => getLatestNews(), []);
   const { data, loading } = useMarketData(fetchNews, 60_000);
 
-  // API 응답 우선, 실패 시 mock 유지
-  const newsList = data ?? mockNews;
+  // API 응답 변환 후 사용, 실패 시 mock 유지
+  const newsList = data ? newsToItems(data) : mockNews;
   const featured = newsList[0];
   const rest = newsList.slice(1, 6);
 
@@ -37,7 +52,7 @@ export default function LatestNews() {
         <>
           {/* Featured article */}
           <div className="p-4 border-b border-inv-border shrink-0">
-            <a href="#" className="group block">
+            <a href={featured.link ?? "#"} target="_blank" rel="noopener noreferrer" className="group block">
               <div className="w-full h-32 bg-gradient-to-br from-inv-nav to-inv-dark rounded-lg mb-3 flex items-center justify-center overflow-hidden">
                 {featured.imageUrl ? (
                   <img src={featured.imageUrl} alt={featured.title} className="w-full h-full object-cover" />
@@ -55,9 +70,11 @@ export default function LatestNews() {
               <h3 className="text-base font-bold text-inv-text group-hover:text-inv-blue transition-colors leading-snug line-clamp-2">
                 {featured.title}
               </h3>
-              <p className="text-sm text-inv-text-light mt-1.5 leading-relaxed line-clamp-2">
-                {featured.summary}
-              </p>
+              {featured.summary && (
+                <p className="text-sm text-inv-text-light mt-1.5 leading-relaxed line-clamp-2">
+                  {featured.summary}
+                </p>
+              )}
               <div className="flex items-center gap-2 mt-2 text-xs text-inv-text-light">
                 <span className="font-medium text-inv-blue">{featured.source}</span>
                 <span>·</span>
@@ -69,7 +86,13 @@ export default function LatestNews() {
           {/* News list */}
           <div className="flex-1 divide-y divide-inv-border overflow-y-auto">
             {rest.map((news) => (
-              <a key={news.id} href="#" className="flex gap-4 p-4 hover:bg-blue-50/30 transition-colors group">
+              <a
+                key={news.id}
+                href={news.link ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-4 p-4 hover:bg-blue-50/30 transition-colors group"
+              >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-inv-blue bg-inv-blue/5 px-1.5 py-0.5 rounded">
