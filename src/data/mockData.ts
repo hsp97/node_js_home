@@ -113,10 +113,10 @@ export const mostPopular: NewsItem[] = [
 ];
 
 export const economicEvents: EconomicEvent[] = [
-  { time: "08:30", country: "United States", countryCode: "US", event: "Initial Jobless Claims", impact: "high", actual: "219K", forecast: "215K", previous: "207K" },
-  { time: "10:00", country: "United States", countryCode: "US", event: "ISM Services PMI", impact: "high", actual: "52.8", forecast: "54.0", previous: "54.1" },
-  { time: "12:00", country: "Eurozone", countryCode: "EU", event: "ECB Interest Rate Decision", impact: "high", forecast: "2.90%", previous: "2.90%" },
-  { time: "14:00", country: "United Kingdom", countryCode: "GB", event: "BoE Interest Rate Decision", impact: "high", forecast: "4.50%", previous: "4.75%" },
-  { time: "19:00", country: "United States", countryCode: "US", event: "Fed Waller Speech", impact: "medium" },
-  { time: "21:30", country: "Japan", countryCode: "JP", event: "Household Spending (YoY)", impact: "medium", forecast: "0.5%", previous: "0.4%" },
+  { time: "08:30", country: "US", event: "Initial Jobless Claims", impact: "high", actual: 219, estimate: 215, prev: 207, unit: "K" },
+  { time: "10:00", country: "US", event: "ISM Services PMI", impact: "high", actual: 52.8, estimate: 54.0, prev: 54.1, unit: "" },
+  { time: "12:00", country: "EU", event: "ECB Interest Rate Decision", impact: "high", actual: null, estimate: 2.90, prev: 2.90, unit: "%" },
+  { time: "14:00", country: "GB", event: "BoE Interest Rate Decision", impact: "high", actual: null, estimate: 4.50, prev: 4.75, unit: "%" },
+  { time: "19:00", country: "US", event: "Fed Waller Speech", impact: "medium", actual: null, estimate: null, prev: null, unit: "" },
+  { time: "21:30", country: "JP", event: "Household Spending (YoY)", impact: "medium", actual: null, estimate: 0.5, prev: 0.4, unit: "%" },
 ];
