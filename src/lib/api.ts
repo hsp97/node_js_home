@@ -1,11 +1,19 @@
 import type { ApiResponse, MarketIndex, ExchangeRate, VixData, MarketItem, WatchlistItem, NewsItem, CommodityData, NewsDataApi, EconomicCalendarData } from "@/types/market";
+import { getTokenClient } from "./auth";
 
 // Next.js rewrites /api/* → http://localhost:4000/* 으로 프록시
 // 클라이언트에서 직접 localhost:4000 호출 시 CORS 문제 방지
 const API_BASE = "/api";
 
+/** API 호출 (인증 토큰 자동 첨부) */
 async function fetchApi<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`);
+  const token = getTokenClient();
+  const headers: HeadersInit = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${API_BASE}${path}`, { headers });
   if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
   const json: ApiResponse<T> = await res.json();
   if (!json.success) throw new Error("API returned success: false");
@@ -14,28 +22,28 @@ async function fetchApi<T>(path: string): Promise<T> {
 
 // ── Auth ──
 
-export interface LoginResponse {
-  chatId: string;
-}
-
-export interface LoginResult {
+export interface VerifyTokenResult {
   success: boolean;
-  data?: LoginResponse;
   message?: string;
 }
 
-/** 텔레그램 Chat ID로 로그인 */
-export async function login(chatId: string): Promise<LoginResult> {
-  // TODO: 백엔드 auth/login 구현 후 아래 임시 코드 제거
-  return { success: true, data: { chatId } };
+/** JWT 토큰 검증 (보호된 엔드포인트 호출로 검증) */
+export async function verifyToken(token: string): Promise<VerifyTokenResult> {
+  try {
+    const res = await fetch(`${API_BASE}/stock/wishlist`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  // const res = await fetch(`${API_BASE}/auth/login`, {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ chatId }),
-  // });
-  // const json = await res.json();
-  // return json;
+    if (res.status === 401) {
+      return { success: false, message: "유효하지 않은 토큰입니다." };
+    }
+    if (!res.ok) {
+      return { success: false, message: "서버 오류가 발생했습니다." };
+    }
+    return { success: true };
+  } catch {
+    return { success: false, message: "서버 연결에 실패했습니다." };
+  }
 }
 
 // ── Watchlist ──

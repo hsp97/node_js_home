@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
-import { getSessionServer } from "@/lib/auth";
+import { getTokenServer } from "@/lib/auth";
 import Header from "@/components/Header";
 import MarketTicker from "@/components/MarketTicker";
 import DashboardGrid from "@/components/DashboardGrid";
 import Footer from "@/components/Footer";
 
 export default async function DashboardPage() {
-  const chatId = await getSessionServer();
-  if (!chatId) {
+  const token = await getTokenServer();
+  if (!token) {
     redirect("/login");
   }
   return (

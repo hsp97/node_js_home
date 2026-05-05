@@ -201,4 +201,4 @@ export const translations = {
   },
 } as const;
 
-export type Translations = typeof translations.ko;
+export type Translations = typeof translations.ko | typeof translations.en;

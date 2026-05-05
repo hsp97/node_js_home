@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { getSessionServer } from "@/lib/auth";
+import { getTokenServer } from "@/lib/auth";
 
 export default async function RootPage() {
-  const chatId = await getSessionServer();
+  const token = await getTokenServer();
 
-  if (chatId) {
+  if (token) {
     redirect("/dashboard");
   } else {
     redirect("/login");
