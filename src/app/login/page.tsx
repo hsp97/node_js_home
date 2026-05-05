@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api";
-import { setSessionCookie } from "@/lib/auth";
+import { verifyToken } from "@/lib/api";
+import { setTokenCookie, isValidJwtFormat } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [chatId, setChatId] = useState("");
+  const [token, setToken] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -15,32 +15,28 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    const trimmed = chatId.trim();
+    const trimmed = token.trim();
     if (!trimmed) {
-      setError("Telegram Chat ID를 입력해주세요.");
+      setError("JWT 토큰을 입력해주세요.");
       return;
     }
-    if (!/^-?\d+$/.test(trimmed)) {
-      setError("Chat ID는 숫자만 입력 가능합니다.");
+    if (!isValidJwtFormat(trimmed)) {
+      setError("올바른 JWT 토큰 형식이 아닙니다.");
       return;
     }
 
     setLoading(true);
 
     try {
-      router.push("/dashboard");
-      
-      const result = await login(trimmed);
+      const result = await verifyToken(trimmed);
 
-      if (result.success && result.data?.chatId) {
-        // 로그인 성공 → 세션 쿠키 저장 후 대시보드로 이동
-        setSessionCookie(result.data.chatId);
+      if (result.success) {
+        setTokenCookie(trimmed);
         router.push("/dashboard");
       } else {
-        // 서버에서 반환한 실패 메시지 표시
-        setError(result.message || "로그인에 실패했습니다.");
+        setError(result.message || "토큰 검증에 실패했습니다.");
       }
-    } catch (err) {
+    } catch {
       setError("서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.");
     } finally {
       setLoading(false);
@@ -67,15 +63,15 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-white">로그인</h1>
-          <p className="text-gray-400 text-sm mt-1">Telegram Chat ID로 접속합니다</p>
+          <p className="text-gray-400 text-sm mt-1">텔레그램에서 발급받은 토큰으로 접속합니다</p>
         </div>
 
         {/* Form Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
-          {/* How to get ID guide */}
+          {/* How to get token guide */}
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
             <p className="text-xs font-bold text-inv-blue mb-2 uppercase tracking-wider">
-              Chat ID 발급 방법
+              토큰 발급 방법
             </p>
             <ol className="space-y-1.5 text-sm text-inv-text">
               <li className="flex items-start gap-2">
@@ -90,15 +86,15 @@ export default function LoginPage() {
                 </span>
                 채팅창에{" "}
                 <code className="bg-white border border-inv-border rounded px-1.5 py-0.5 text-xs font-mono text-inv-blue">
-                  /start
+                  /토큰발급
                 </code>{" "}
-                를 입력하고 전송합니다
+                을 입력하고 전송합니다
               </li>
               <li className="flex items-start gap-2">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-inv-blue text-white text-[10px] font-bold flex items-center justify-center mt-0.5">
                   3
                 </span>
-                봇이 발급한 <strong>Chat ID</strong>를 아래에 입력합니다
+                봇이 발급한 <strong>토큰</strong>을 아래에 붙여넣습니다
               </li>
             </ol>
           </div>
@@ -107,25 +103,24 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
-                htmlFor="chatId"
+                htmlFor="token"
                 className="block text-sm font-semibold text-inv-text mb-1.5"
               >
-                Telegram Chat ID
+                JWT 토큰
               </label>
-              <input
-                id="chatId"
-                type="text"
-                inputMode="numeric"
-                placeholder="예: 123456789"
-                value={chatId}
+              <textarea
+                id="token"
+                placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                value={token}
                 onChange={(e) => {
-                  setChatId(e.target.value);
+                  setToken(e.target.value);
                   setError("");
                 }}
                 disabled={loading}
-                className={`w-full px-4 py-3 border rounded-xl text-inv-text placeholder-gray-300 text-sm
+                rows={3}
+                className={`w-full px-4 py-3 border rounded-xl text-inv-text placeholder-gray-300 text-sm font-mono
                   focus:outline-none focus:ring-2 focus:ring-inv-blue focus:border-transparent transition-all
-                  disabled:bg-gray-100 disabled:cursor-not-allowed
+                  disabled:bg-gray-100 disabled:cursor-not-allowed resize-none
                   ${error ? "border-inv-red bg-red-50" : "border-inv-border bg-white"}`}
               />
               {error && (
@@ -167,7 +162,7 @@ export default function LoginPage() {
 
         {/* Footer note */}
         <p className="text-center text-xs text-gray-500 mt-6">
-          Chat ID는 본인 인증 용도로만 사용됩니다
+          토큰은 30일간 유효하며, 만료 시 재발급받으세요
         </p>
       </div>
     </div>
