@@ -48,9 +48,30 @@ export async function verifyToken(token: string): Promise<VerifyTokenResult> {
 
 // ── Watchlist ──
 
-/** 사용자 관심종목 (user=1 하드코딩, 추후 chatId 기반으로 변경) */
+/** 백엔드 wishlist 응답 형식 (DB 컬럼 그대로) */
+interface WishlistApi {
+  id: number;
+  f_user_id: number;
+  f_ticker: string;
+  f_name: string;
+  f_regdate: string;
+}
+
+/** 백엔드 응답 → 프론트엔드 WatchlistItem 변환 */
+function wishlistToWatchlist(items: WishlistApi[]): WatchlistItem[] {
+  return items.map((item) => ({
+    symbol: item.f_ticker,
+    name: item.f_name,
+    price: 0,
+    change: 0,
+    changePercent: 0,
+  }));
+}
+
+/** 사용자 관심종목 (JWT 토큰 기반 인증) */
 export async function getWatchlist(): Promise<WatchlistItem[]> {
-  return fetchApi<WatchlistItem[]>("/stock/wishlist");
+  const data = await fetchApi<WishlistApi[]>("/stock/wishlist");
+  return wishlistToWatchlist(data);
 }
 
 // ── Market Data ──

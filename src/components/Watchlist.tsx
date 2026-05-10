@@ -77,7 +77,12 @@ export default function Watchlist() {
         </div>
       ) : (
         <div className="flex-1 divide-y divide-inv-border overflow-y-auto">
-          {watchlist.map((item) => (
+          {watchlist.map((item) => {
+            const price = typeof item.price === "number" ? item.price : 0;
+            const change = typeof item.change === "number" ? item.change : 0;
+            const changePercent =
+              typeof item.changePercent === "number" ? item.changePercent : 0;
+            return (
             <div
               key={item.symbol}
               className="flex items-center justify-between px-4 py-3 hover:bg-blue-50/30 transition-colors group"
@@ -91,20 +96,20 @@ export default function Watchlist() {
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <div className="text-sm font-semibold text-inv-text">
-                    ${item.price.toFixed(2)}
+                    ${price.toFixed(2)}
                   </div>
                   <div className="flex items-center justify-end gap-1">
-                    <span className={`text-xs font-medium ${item.change >= 0 ? "text-inv-green" : "text-inv-red"}`}>
-                      {item.change >= 0 ? "+" : ""}{item.change.toFixed(2)}
+                    <span className={`text-xs font-medium ${change >= 0 ? "text-inv-green" : "text-inv-red"}`}>
+                      {change >= 0 ? "+" : ""}{change.toFixed(2)}
                     </span>
                     <span
                       className={`text-[10px] font-bold px-1 py-0.5 rounded ${
-                        item.changePercent >= 0
+                        changePercent >= 0
                           ? "bg-inv-green/10 text-inv-green"
                           : "bg-inv-red/10 text-inv-red"
                       }`}
                     >
-                      {item.changePercent >= 0 ? "+" : ""}{item.changePercent.toFixed(2)}%
+                      {changePercent >= 0 ? "+" : ""}{changePercent.toFixed(2)}%
                     </span>
                   </div>
                 </div>
@@ -121,7 +126,8 @@ export default function Watchlist() {
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

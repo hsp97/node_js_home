@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import MarketTicker from "@/components/MarketTicker";
 import DashboardGrid from "@/components/DashboardGrid";
 import Footer from "@/components/Footer";
+import ChatPanel from "@/components/ChatPanel";
 
 export default async function DashboardPage() {
   const token = await getTokenServer();
@@ -20,6 +21,9 @@ export default async function DashboardPage() {
       </main>
 
       <Footer />
+
+      {/* 오른쪽 슬라이드 채팅 패널 */}
+      <ChatPanel />
     </div>
   );
 }
