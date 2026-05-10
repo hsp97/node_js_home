@@ -51,7 +51,9 @@ export default function StockChat({ ticker, onClose }: StockChatProps) {
     }
 
     const connection = new HubConnectionBuilder()
-      .withUrl(`${SIGNALR_URL}?access_token=${encodeURIComponent(token)}`)
+      .withUrl(SIGNALR_URL, {
+        accessTokenFactory: () => token,
+      })
       .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
       .build();
 
